@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,14 +26,40 @@ public class SellerDaoJDBC implements SellerDao {
 	}
 
 	@Override
-	public void insert(Department obj) {
-
-	}
-
-	@Override
-	public void update(Department obj) {
-		// TODO Auto-generated method stub
-
+	public void insert(Seller obj) {
+		PreparedStatement st = null;		
+		try {
+			st = conn.prepareStatement(
+								"INSERT INTO seller "
+								+ "(Name, Email, BirthDate, BaseSalary, DepartmentId) "
+								+ "VALUES "
+								+ "(?, ?, ?, ?, ?)",
+								Statement.RETURN_GENERATED_KEYS);
+			
+			st.setString(1, obj.getName());
+			st.setString(2, obj.getEmail());
+			st.setDate(3, new java.sql.Date(obj.getBirthDate().getTime()));
+			st.setDouble(4, obj.getBaseSalary());
+			st.setInt(5, obj.getDepartment().getId());
+			
+			int rowsAffected = st.executeUpdate();
+			
+			if(rowsAffected > 0) {
+				ResultSet rs = st.getGeneratedKeys();
+				if(rs.next()) {
+					// Posição 1 porque é a posição dos ID no banco.
+					int id = rs.getInt(1);
+					obj.setId(id);
+				}
+				DB.CloseResultSet(rs);
+			}else {
+				throw new DbException("Unexpected error! No rows affected!");
+			}
+		}catch(SQLException e) {
+			throw new DbException(e.getMessage());
+		}finally {
+			DB.closeStatement(st);
+		}
 	}
 
 	@Override
@@ -47,8 +74,8 @@ public class SellerDaoJDBC implements SellerDao {
 		
 		try {
 			
-			st = conn.prepareStatement(""
-					+ "SELECT seller.*, department.Name as DepName "
+			st = conn.prepareStatement(
+					"SELECT seller.*, department.Name as DepName "
 					+ "FROM seller INNER JOIN department "
 					+ "ON seller.DepartmentId = department.Id "
 					+ "WHERE seller.Id = ?");
@@ -161,6 +188,12 @@ public class SellerDaoJDBC implements SellerDao {
 		}catch(SQLException e) {
 			throw new DbException(e.getMessage());
 		}
+		
+	}
+
+	@Override
+	public void update(Seller obj) {
+		// TODO Auto-generated method stub
 		
 	}
 

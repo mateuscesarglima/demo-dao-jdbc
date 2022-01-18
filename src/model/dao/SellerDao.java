@@ -7,10 +7,10 @@ import model.entities.Seller;
 
 public interface SellerDao {
 	// Operação responsável por inserir no BD o obj
-	void insert(Department obj);
+	void insert(Seller obj);
 	
 	// Operação responsável por atualizar os dados no BD
-	void update(Department obj);
+	void update(Seller obj);
 	
 	// Operação responsável por deletar dados por ID
 	void deleteById(Integer id);
