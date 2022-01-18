@@ -18,5 +18,7 @@ public interface SellerDao {
 	// Operação responsável por procurar pelo ID
 	Seller findById(Integer id);
 	
+	List<Seller> findByDepartment(Department department);
+	
 	List<Seller> findAll();
 }

@@ -1,6 +1,6 @@
 package model.dao;
 
-import java.sql.Connection;
+
 
 import db.DB;
 import model.dao.impl.SellerDaoJDBC;
