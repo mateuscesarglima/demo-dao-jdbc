@@ -74,6 +74,8 @@ public class SellerDaoJDBC implements SellerDao {
 			st.executeUpdate();
 		}catch(SQLException e) {
 			throw new DbException(e.getMessage());
+		}finally {
+			DB.closeStatement(st);
 		}
 	}
 
