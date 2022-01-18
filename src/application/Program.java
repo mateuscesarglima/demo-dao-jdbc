@@ -41,12 +41,17 @@ public class Program {
 		sellerDao.insert(newSeller);
 		System.out.println("Inserted new id = " + newSeller.getId());
 		
-		System.out.println("=== TEST 5: Seller Insert ===");
+		System.out.println("=== TEST 5: Seller Update ===");
 		seller = sellerDao.findById(1);
 		seller.setName("Marta Wayne");
 		sellerDao.update(seller);
 		System.out.println("Update completed!");
 		
+
+		System.out.println("=== TEST 5: Seller Delete ===");
+		seller = sellerDao.findById(10);
+		sellerDao.deleteById(seller.getId());
+		System.out.println("Deleted!");
 		
 		
 	}
